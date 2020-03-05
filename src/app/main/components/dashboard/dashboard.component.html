@@ -1,0 +1,189 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+
+    <mat-toolbar color="primary" class="example-toolbar">
+
+        <!-- Lateral Menu -->
+        <button mat-icon-button (click)="snav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+
+        <!-- Title -->
+        <h1 class="example-app-name">Finanzas</h1>
+        <span class="example-spacer"></span>
+
+
+        <!-- User Menu -->
+        <div class="example-icon" aria-hidden="false">
+
+            <button id="button-user-menu" mat-icon-button [matMenuTriggerFor]="menu" aria-label="User Menu">
+                <mat-icon class="mat-icon-user-menu">account_circle</mat-icon>
+            </button>
+
+            <mat-menu #menu="matMenu">
+
+                <span mat-menu-item>{{userSession.name}}</span>
+                <mat-divider></mat-divider>
+
+                <button mat-menu-item (click)="viewOption('ADM-Profile')" *ngIf="isAccessModule('ADM-Profile')">
+                    <mat-icon>perm_identity</mat-icon>
+                    <span>Perfil</span>
+                </button>
+
+                <button mat-menu-item (click)="viewOption('ADM-Help')" *ngIf="isAccessModule('ADM-Help')">
+                    <mat-icon>help_outline</mat-icon>
+                    <span>Ayuda</span>
+                </button>
+
+                <button mat-menu-item (click)="signOut()">
+                    <mat-icon>lock_open</mat-icon>
+                    <span>Cerrar sesión</span>
+                </button>
+
+            </mat-menu>
+
+        </div>
+
+    </mat-toolbar>
+
+    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+            fixedTopGap="56">
+
+            <mat-nav-list>
+
+                <!-- Module -->
+                <button mat-list-item (click)="viewOption('ADM-Modules')" *ngIf="isAccessModule('ADM-Modules')">
+                    <mat-icon color="primary">view_module</mat-icon>Módulos
+                </button>
+
+                <!-- Collection -->
+                <button mat-list-item (click)="viewOption('ADM-Collections')" *ngIf="isAccessModule('ADM-Collections')">
+                    <mat-icon color="primary">collections_bookmark</mat-icon>Colecciones
+                </button>
+
+                <!-- Roles -->
+                <button mat-list-item (click)="viewOption('ADM-Roles')" *ngIf="isAccessModule('ADM-Roles')">
+                    <mat-icon color="primary">control_camera</mat-icon>Roles
+                </button>
+
+                <!-- User -->
+                <button mat-list-item (click)="viewOption('ADM-Users')" *ngIf="isAccessModule('ADM-Users')">
+                    <mat-icon color="primary">supervised_user_circle</mat-icon>Usuarios
+                </button>
+
+                <!-- App -->
+                <button mat-list-item (click)="viewOption('ADM-Apps')" *ngIf="isAccessModule('ADM-Apps')">
+                    <mat-icon color="primary">apps</mat-icon>Apps
+                </button>
+
+                <!-- Token -->
+                <button mat-list-item (click)="viewOption('ADM-Tokens')" *ngIf="isAccessModule('ADM-Tokens')">
+                    <mat-icon color="primary">fingerprint</mat-icon>Tokens
+                </button>
+
+                <!-- Log -->
+                <button mat-list-item (click)="viewOption('ADM-Logs')" *ngIf="isAccessModule('ADM-Logs')">
+                    <mat-icon color="primary">find_in_page</mat-icon>Logs
+                </button>
+
+                <!-- Data -->
+                <button mat-list-item (click)="viewOption('ADM-Data')" *ngIf="isAccessModule('ADM-Data')">
+                    <mat-icon color="primary">storage</mat-icon>Data
+                </button>
+                
+                <!-- Entity -->
+                <button mat-list-item (click)="viewOption('ADM-Entities')" *ngIf="isAccessModule('ADM-Entities')">
+                    <mat-icon color="primary">assignment</mat-icon>Entidades
+                </button>
+
+                <!-- Catalog -->
+                <button mat-list-item (click)="viewOption('ADM-Catalogs')" *ngIf="isAccessModule('ADM-Catalogs')">
+                    <mat-icon color="primary">list</mat-icon>Catálogos
+                </button>
+                
+                <!-- Transaction -->
+                <button mat-list-item (click)="viewOption('APP-Transactions')"
+                    *ngIf="isAccessModule('APP-Transactions')">
+                    <mat-icon color="primary">import_export</mat-icon>Transacciones
+                </button>
+
+                <!-- Transaction Search-->
+                <button mat-list-item (click)="viewOption('APP-Transactions-Search')"
+                    *ngIf="isAccessModule('APP-Transactions-Search')">
+                    <mat-icon color="primary">search</mat-icon>Búsqueda
+                </button>
+
+                <!-- Transaction Report-->
+                <button mat-list-item (click)="viewOption('APP-Transactions-Report')"
+                    *ngIf="isAccessModule('APP-Transactions-Report')">
+                    <mat-icon color="primary">assessment</mat-icon>Reporte
+                </button>
+
+            </mat-nav-list>
+
+        </mat-sidenav>
+
+        <mat-sidenav-content [ngSwitch]="option">
+
+            <!-- Entity -->
+            <admin-entity-module-main [userSession]="userSession"
+                [privilegeCollectionSession]="getPrivilege('adm.modules')" *ngSwitchCase="'ADM-Modules'">
+            </admin-entity-module-main>
+
+            <admin-entity-collection-main [userSession]="userSession"
+                [privilegeCollectionSession]="getPrivilege('adm.collections')" *ngSwitchCase="'ADM-Collections'">
+            </admin-entity-collection-main>
+
+            <admin-entity-role-main [userSession]="userSession" [privilegeCollectionSession]="getPrivilege('adm.roles')"
+                *ngSwitchCase="'ADM-Roles'"></admin-entity-role-main>
+
+            <admin-entity-user-main [userSession]="userSession" [privilegeCollectionSession]="getPrivilege('adm.users')"
+                *ngSwitchCase="'ADM-Users'"></admin-entity-user-main>
+
+            <admin-entity-app-main [userSession]="userSession" [privilegeCollectionSession]="getPrivilege('adm.apps')"
+                *ngSwitchCase="'ADM-Apps'"></admin-entity-app-main>
+
+            <admin-entity-token-main [userSession]="userSession"
+                [privilegeCollectionSession]="getPrivilege('adm.tokens')" *ngSwitchCase="'ADM-Tokens'">
+            </admin-entity-token-main>
+
+            <admin-entity-log-main [userSession]="userSession" [privilegeCollectionSession]="getPrivilege('adm.logs')"
+                *ngSwitchCase="'ADM-Logs'"></admin-entity-log-main>
+
+            <admin-entity-data-main [userSession]="userSession" [privilegeCollectionSession]="getPrivilege('adm.data')"
+                *ngSwitchCase="'ADM-Data'"></admin-entity-data-main>
+
+            <admin-entity-catalog-main [userSession]="userSession"
+                [privilegeCollectionSession]="getPrivilege('adm.catalogs')" *ngSwitchCase="'ADM-Catalogs'">
+            </admin-entity-catalog-main>
+
+            <admin-entity-main [userSession]="userSession" [roleSession]="roleSession" *ngSwitchCase="'ADM-Entities'">
+            </admin-entity-main>
+            
+            <admin-entity-transaction-main [userSession]="userSession"
+                [privilegeCollectionSession]="getPrivilege('app.transactions')" *ngSwitchCase="'APP-Transactions'">
+            </admin-entity-transaction-main>
+
+            <admin-entity-transaction-main-search [userSession]="userSession"
+                [privilegeCollectionSession]="getPrivilege('app.transactions')" *ngSwitchCase="'APP-Transactions-Search'">
+            </admin-entity-transaction-main-search>
+
+            <admin-entity-transaction-main-report [userSession]="userSession"
+                [privilegeCollectionSession]="getPrivilege('app.transactions')" *ngSwitchCase="'APP-Transactions-Report'">
+            </admin-entity-transaction-main-report>
+
+            <!-- Main -->
+            <admin-main-profile [userSession]="userSession" [roleSession]="roleSession" *ngSwitchCase="'ADM-Profile'">
+            </admin-main-profile>
+
+            <admin-main-help *ngSwitchCase="'ADM-Help'"></admin-main-help>
+
+            <!-- Default -->
+            <admin-main-help *ngSwitchDefault></admin-main-help>
+
+        </mat-sidenav-content>
+
+    </mat-sidenav-container>
+
+</div>

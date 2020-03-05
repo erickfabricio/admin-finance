@@ -1,0 +1,78 @@
+<div class="div-crud container">
+
+    <!-- HEADER -->
+    <div class="div-crud-header">
+        <h4 [ngSwitch]="action">
+
+            {{title}}
+
+            <span *ngSwitchCase="'CREATE'">
+                <button type="button" class="btn btn-outline-success" (click)="onCreate()" *ngIf="privilegeCollectionSession.create">Crear</button>
+            </span>
+
+            <span *ngSwitchCase="'CRUD'">
+                <button type="button" class="btn btn-outline-warning" (click)="onUpdate()" *ngIf="privilegeCollectionSession.update">Actualizar</button>
+
+                <button type="button" class="btn btn-outline-danger" (click)="onDelete()" *ngIf="privilegeCollectionSession.delete">Eliminar</button>
+            </span>
+
+        </h4>
+    </div>
+
+    <!-- BODY -->
+    <div class="div-crud-form">
+        <form [formGroup]="form" [style.fontSize.px]=15>
+
+            <!-- id -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.id">
+                <mat-form-field>
+                    <input matInput placeholder="Id" title="Id" type="text" formControlName="id">
+                </mat-form-field>
+            </div>
+
+            <!-- name -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.name">
+                <mat-form-field>
+                    <input matInput placeholder="Nombre" title="Nombre" #inputName type="text" formControlName="name"
+                        maxlength="100">
+                    <mat-error *ngIf="form.get('name').invalid">{{getErrorMessageName()}}</mat-error>
+                    <mat-hint align="end">{{inputName.value?.length || 0}}/50</mat-hint>
+                </mat-form-field>
+            </div>
+
+            <!-- description -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.description">
+                <mat-form-field>
+                    <textarea matInput placeholder="Descripción" title="Descripción" #inputDescription
+                        formControlName="description" maxlength="100"></textarea>
+                    <mat-error *ngIf="form.get('description').invalid">{{getErrorMessageDescription()}}</mat-error>
+                    <mat-hint align="end">{{inputDescription.value?.length || 0}}/100</mat-hint>
+                </mat-form-field>
+            </div>
+
+            <!-- state -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.state">
+                <mat-form-field>
+                    <mat-select placeholder="Estado" title="Estado" formControlName="state">
+                        <mat-option value="Activo">Activo</mat-option>
+                        <mat-option value="Inactivo">Inactivo</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <!-- creationDate -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.creationDate">
+                <mat-form-field>
+                    <input matInput placeholder="Fecha de creación" title="Fecha de creación" type="text"
+                        formControlName="creationDate">
+                </mat-form-field>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Item List -->
+    <admin-entity-item-main [catalog]="catalog" *ngIf="showItemList" #itemMain></admin-entity-item-main>
+    
+
+</div>

@@ -1,0 +1,33 @@
+::ng-deep .info-tooltip {
+    background: #000000;
+}
+
+::ng-deep .snackbar-success {
+    color:#008000;
+    background-color: #ffffff;
+}
+
+::ng-deep .snackbar-warning {
+    color: #ff0000;
+    background-color: #ffffff;
+}
+
+::ng-deep .snackbar-danger {
+    color: #ff0000;
+    background-color: #ffffff;
+}
+
+.div-header {
+    text-align: center;
+}
+
+.input-container-search {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;    
+}
+
+.input-container-search>* {
+    width: 100%;
+    text-align: left;    
+}

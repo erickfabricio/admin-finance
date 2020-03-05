@@ -1,0 +1,134 @@
+<div class="div-crud container">
+
+    <!-- HEADER -->
+    <div class="div-crud-header">
+        <h4 [ngSwitch]="action">
+
+            {{title}}
+
+            <span *ngSwitchCase="'CREATE'">
+                <button type="button" class="btn btn-outline-success" (click)="onCreate()"
+                    *ngIf="privilegeCollectionSession.create">Create</button>
+            </span>
+
+            <span *ngSwitchCase="'CRUD'">
+                <button type="button" class="btn btn-outline-warning" (click)="onUpdate()"
+                    *ngIf="privilegeCollectionSession.update">Update</button>
+                &nbsp;
+                <button type="button" class="btn btn-outline-danger" (click)="onDelete()"
+                    *ngIf="privilegeCollectionSession.delete">Delete</button>
+            </span>
+
+        </h4>
+    </div>
+
+    <!-- BODY -->
+    <div class="div-crud-form">
+        <form [formGroup]="form" [style.fontSize.px]=15>
+
+            <!-- id -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.id">
+                <mat-form-field>
+                    <input matInput placeholder="Id" title="Id" type="text" formControlName="id">
+                </mat-form-field>
+            </div>
+
+            <!-- type -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.type">
+                <mat-form-field>
+                    <mat-select placeholder="Tipo" title="Tipo" formControlName="type">
+                        <mat-option *ngFor="let item of catalogTransactionType.list" [value]=item._id>
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('type').invalid">{{getErrorMessageType()}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <!-- category -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.category">
+                <mat-form-field>
+                    <mat-select placeholder="Categoría" title="Categoría" formControlName="category">
+                        <mat-option *ngFor="let item of catalogTransactionCategory.list" [value]=item._id>
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('category').invalid">{{getErrorMessageCategory()}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <!-- account -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.account">
+                <mat-form-field>
+                    <mat-select placeholder="Cuenta" title="Cuenta" formControlName="account">
+                        <mat-option *ngFor="let item of catalogTransactionAccount.list" [value]=item._id>
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('account').invalid">{{getErrorMessageAccount()}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <!-- description -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.description">
+                <mat-form-field>
+                    <textarea matInput placeholder="Descripción" title="Descripción" #inputDescription
+                        formControlName="description" maxlength="500"></textarea>
+                    <mat-error *ngIf="form.get('description').invalid">{{getErrorMessageDescription()}}</mat-error>
+                    <mat-hint align="end">{{inputDescription.value?.length || 0}}/500</mat-hint>
+                </mat-form-field>
+            </div>
+
+            <!-- amount -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.amount">
+                <mat-form-field>
+                    <input matInput placeholder="Monto" title="Monto" type="number" formControlName="amount">
+                    <mat-error *ngIf="form.get('amount').invalid">{{getErrorMessageAmount()}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <!-- date -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.date">
+                <mat-form-field>
+                    <input matInput [matDatepicker]="picker" placeholder="Fecha" title="Fecha" formControlName="date" [max]="today">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="form.get('date').invalid">{{getErrorMessageDate()}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <!-- commentary -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.commentary">
+                <mat-form-field>
+                    <textarea matInput placeholder="Comentario" title="Comentario" #inputCommentary
+                        formControlName="commentary" maxlength="500"></textarea>
+                    <mat-error *ngIf="form.get('commentary').invalid">{{getErrorMessageCommentary()}}</mat-error>
+                    <mat-hint align="end">{{inputCommentary.value?.length || 0}}/500</mat-hint>
+                </mat-form-field>
+            </div>
+
+            <!-- state -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.state">
+                <mat-form-field>
+                    <mat-select placeholder="Select" title="State" formControlName="state">
+                        <mat-option value="Active">Active</mat-option>
+                        <mat-option value="Inactive">Inactive</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('state').invalid">{{getErrorMessageState()}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <!-- creationDate -->
+            <div class="div-crud-form-input input-container" *ngIf="visibleControls.creationDate">
+                <mat-form-field>
+                    <input matInput placeholder="Creation Date" title="Creation Date" type="text"
+                        formControlName="creationDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker" disabled></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+        </form>
+    </div>
+
+</div>

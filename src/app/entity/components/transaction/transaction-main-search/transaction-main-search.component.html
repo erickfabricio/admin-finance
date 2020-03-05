@@ -1,0 +1,193 @@
+<div class="div-main container">
+
+    <!-- HEADER -->
+    <div class="div-header">
+        <br>
+        <h4>Filtros de búsqueda</h4>
+
+        <!-- Dates -->
+        <div class="row">
+
+            <!-- start date -->
+            <div class="input-container col">
+                <mat-form-field>
+                    <input matInput [matDatepicker]="pickerStartDate" placeholder="Fecha inicial" title="Fecha inicial"
+                        [max]="today" [formControl]="inputStartDate">
+                    <mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerStartDate></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <!-- end date -->
+            <div class="input-container col">
+                <mat-form-field>
+                    <input matInput [matDatepicker]="pickerEndDate" placeholder="Fecha final" title="Fecha final"
+                        [max]="today" [formControl]="inputEndDate">
+                    <mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerEndDate></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <!-- catalogs -->
+            <div class="input-container col">
+                <mat-accordion>
+
+                    <mat-expansion-panel>
+
+                        <!-- Info -->
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Filtros
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Búsqueda específica
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+
+                        <!-- type -->
+                        <div class="input-container-search">
+                            <h6>Tipo de transacción</h6>
+                            <mat-checkbox *ngFor="let item of catalogTransactionType.list" #checkboxFilterType
+                                (change)="filterChange(item, checkboxFilterType.checked)" [checked]="true">
+                                {{item.name}}
+                            </mat-checkbox>
+                        </div>
+
+                        <!-- category -->
+                        <div class="input-container-search">
+                            <h6>Categoría</h6>
+                            <mat-checkbox *ngFor="let item of catalogTransactionCategory.list" #checkboxFilterCategory
+                                (change)="filterChange(item, checkboxFilterCategory.checked)" [checked]="true">
+                                {{item.name}}
+                            </mat-checkbox>
+                        </div>
+
+                        <!-- account -->
+                        <div class="input-container-search">
+                            <h6>Cuentas afectadas</h6>
+                            <mat-checkbox *ngFor="let item of catalogTransactionAccount.list" #checkboxFilterAccount
+                                (change)="filterChange(item, checkboxFilterAccount.checked)" [checked]="true">
+                                {{item.name}}
+                            </mat-checkbox>
+                        </div>
+
+                    </mat-expansion-panel>
+
+                </mat-accordion>
+            </div>
+
+            <!-- search -->
+            <div class="input-container col">
+                <button type="button" class="btn btn-outline-success" (click)="applyFilter()">Buscar</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BODY -->
+    <div class="div-body">
+
+        <!-- List transactions -->
+        <div class="div-list-table mat-elevation-z8">
+
+            <table mat-table [dataSource]="dataSource" matSort class="table-hover">
+
+                <!-- # -->
+                <ng-container matColumnDef="#">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+                    <td mat-cell *matCellDef="let transaction; let i = index">
+                        {{dataSource.filteredData.indexOf(transaction) + 1}}
+                    </td>
+                </ng-container>
+
+                <!-- Description -->
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </th>
+                    <td mat-cell *matCellDef="let transaction"> {{ getStringFormat(transaction.description, 100) }}
+                    </td>
+                </ng-container>
+
+                <!-- Type -->
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+                    <td mat-cell *matCellDef="let transaction"> {{ getTransactionItemName('type', transaction) }} </td>
+                </ng-container>
+
+                <!-- Category -->
+                <ng-container matColumnDef="category">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoria </th>
+                    <td mat-cell *matCellDef="let transaction"> {{ getTransactionItemName('category', transaction) }}
+                    </td>
+                </ng-container>
+
+                <!-- Account -->
+                <ng-container matColumnDef="account">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cuenta </th>
+                    <td mat-cell *matCellDef="let transaction"> {{ getTransactionItemName('account', transaction) }}
+                    </td>
+                </ng-container>
+
+                <!-- Amount -->
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Monto </th>
+                    <td mat-cell *matCellDef="let transaction"> {{transaction.amount}} </td>
+                </ng-container>
+
+                <!-- Date -->
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                    <td mat-cell *matCellDef="let transaction"> {{transaction.date | date:'fullDate'}} </td>
+                </ng-container>
+
+                <!-- Header Table -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let transaction; columns: displayedColumns;"></tr>
+
+            </table>
+
+            <!-- Paginator -->
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+        </div>
+
+        <!-- Resumen -->
+        <br>
+        <mat-divider></mat-divider>
+        <br>
+        <h4>Resumen</h4>
+        <br>
+
+        <div class="row">
+
+            <div class="col" *ngIf="resumenTransactionType.length > 0">
+                <h5>Tipos</h5>
+                <div *ngFor="let item of resumenTransactionType">
+                    <p>{{item.type}} : {{item.money}}</p>
+                </div>
+                <br>
+            </div>
+
+            <div class="col" *ngIf="resumenTransactionCategory.length > 0">
+                <h5>Categorias</h5>
+                <div *ngFor="let item of resumenTransactionCategory">
+                    <p>{{item.category}} : {{item.money}}</p>
+                </div>
+                <br>
+            </div>
+
+            <div class="col" *ngIf="resumenTransactionAccount.length > 0">
+                <h5>Cuentas</h5>
+                <div *ngFor="let item of resumenTransactionAccount">
+                    <p>{{item.account}} : {{item.money}}</p>
+                </div>
+                <br>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+</div>

@@ -1,0 +1,80 @@
+<div class="div-list container">
+
+    <!-- New transaction -->
+    <div class="div-list-header">
+        <h2>Transacciones
+            <span *ngIf="privilegeCollectionSession.create">
+                <button type="button" class="btn btn-outline-success"
+                    (click)="eventCrudEmitter('CREATE')">Nueva</button>
+            </span>
+        </h2>
+    </div>
+
+    <!-- Filter -->
+    <div class="div-list-filter" *ngIf="privilegeCollectionSession.read">
+        <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+        </mat-form-field>
+    </div>
+
+    <!-- List transactions -->
+    <div class="div-list-table mat-elevation-z8" *ngIf="privilegeCollectionSession.read">
+
+        <table mat-table [dataSource]="dataSource" matSort class="table-hover">
+
+            <!-- # -->
+            <ng-container matColumnDef="#">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+                <td mat-cell *matCellDef="let transaction; let i = index">
+                    {{dataSource.filteredData.indexOf(transaction) + 1}}
+                </td>
+            </ng-container>
+
+            <!-- Description -->
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </th>
+                <td mat-cell *matCellDef="let transaction"> {{ getStringFormat(transaction.description, 100) }} </td>
+            </ng-container>
+
+            <!-- Type -->
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+                <td mat-cell *matCellDef="let transaction"> {{ getTransactionItemName('type', transaction) }} </td>
+            </ng-container>
+
+            <!-- Category -->
+            <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoria </th>
+                <td mat-cell *matCellDef="let transaction"> {{ getTransactionItemName('category', transaction) }} </td>
+            </ng-container>
+
+            <!-- Account -->
+            <ng-container matColumnDef="account">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cuenta </th>
+                <td mat-cell *matCellDef="let transaction"> {{ getTransactionItemName('account', transaction) }} </td>
+            </ng-container>
+
+             <!-- Amount -->
+             <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Monto </th>
+                <td mat-cell *matCellDef="let transaction"> {{transaction.amount}} </td>
+            </ng-container>
+
+            <!-- Date -->
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                <td mat-cell *matCellDef="let transaction"> {{transaction.date | date:'fullDate'}} </td>
+            </ng-container>
+
+            <!-- Header Table -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let transaction; columns: displayedColumns;" (click)="eventCrudEmitter('CRUD', transaction)"></tr>
+
+        </table>
+
+        <!-- Paginator -->
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+    </div>
+
+</div>
