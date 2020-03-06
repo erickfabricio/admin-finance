@@ -12,7 +12,7 @@
             <div class="input-container col">
                 <mat-form-field>
                     <input matInput [matDatepicker]="pickerStartDate" placeholder="Fecha inicial" title="Fecha inicial"
-                        [max]="today" [formControl]="inputStartDate">
+                        [formControl]="inputStartDate">
                     <mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
                     <mat-datepicker #pickerStartDate></mat-datepicker>
                 </mat-form-field>
@@ -22,7 +22,7 @@
             <div class="input-container col">
                 <mat-form-field>
                     <input matInput [matDatepicker]="pickerEndDate" placeholder="Fecha final" title="Fecha final"
-                        [max]="today" [formControl]="inputEndDate">
+                        [formControl]="inputEndDate">
                     <mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
                     <mat-datepicker #pickerEndDate></mat-datepicker>
                 </mat-form-field>
@@ -46,11 +46,19 @@
 
                         <!-- type -->
                         <div class="input-container-search">
+
+                            <!--
+                            <mat-checkbox #checkboxType (change)="filterChangeGroup('type', checkboxType.checked)">
+                                <h6>Tipo de transacción</h6>
+                            </mat-checkbox>
+                            -->
+
                             <h6>Tipo de transacción</h6>
                             <mat-checkbox *ngFor="let item of catalogTransactionType.list" #checkboxFilterType
                                 (change)="filterChange(item, checkboxFilterType.checked)" [checked]="true">
                                 {{item.name}}
                             </mat-checkbox>
+
                         </div>
 
                         <!-- category -->
@@ -116,7 +124,7 @@
 
                 <!-- Category -->
                 <ng-container matColumnDef="category">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoria </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoría </th>
                     <td mat-cell *matCellDef="let transaction"> {{ getTransactionItemName('category', transaction) }}
                     </td>
                 </ng-container>
@@ -170,7 +178,7 @@
             </div>
 
             <div class="col" *ngIf="resumenTransactionCategory.length > 0">
-                <h5>Categorias</h5>
+                <h5>Categorías</h5>
                 <div *ngFor="let item of resumenTransactionCategory">
                     <p>{{item.category}} ({{item.count}}): {{item.money | number:'2.2-2'}}</p>
                 </div>

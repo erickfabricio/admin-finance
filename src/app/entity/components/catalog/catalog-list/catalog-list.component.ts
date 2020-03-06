@@ -6,6 +6,7 @@ import { EntityService } from 'src/app/entity/services/entity.service';
 import { CatalogModel } from 'src/app/entity/models/catalog.model';
 import { UserModel } from 'src/app/entity/models/user.model';
 import { PrivilegeCollectionModel } from 'src/app/entity/models/privilege.collection.model';
+import { Util } from 'src/app/entity/models/util';
 
 @Component({
   selector: 'admin-entity-catalog-list',
@@ -40,7 +41,11 @@ export class CatalogListComponent implements OnInit {
 
   find() {
     this.entityService.find(CatalogModel.entity)
-      .subscribe(catalogs => { /*console.catalog(catalogs);*/ this.catalogs = <CatalogModel[]>catalogs; this.dataSource.data = this.catalogs });
+      .subscribe(catalogs => { 
+        this.catalogs = <CatalogModel[]>catalogs; 
+        //Order
+        this.catalogs = Util.orderAsc(this.catalogs, 'name');
+        this.dataSource.data = this.catalogs });
   }
 
   applyFilter(filterValue: string) {

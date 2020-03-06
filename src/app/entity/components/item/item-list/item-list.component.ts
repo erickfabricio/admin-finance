@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { EntityService } from 'src/app/entity/services/entity.service';
 import { ItemModel } from 'src/app/entity/models/item.model';
 import { CatalogModel } from 'src/app/entity/models/catalog.model';
+import { Util } from 'src/app/entity/models/util';
 
 @Component({
   selector: 'admin-entity-item-list',
@@ -33,6 +34,8 @@ export class ItemListComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.catalog = catalog;
+    //Oreder
+    this.catalog.list = Util.orderAsc(this.catalog.list, 'name');
     this.dataSource.data = this.catalog.list;
   }
 

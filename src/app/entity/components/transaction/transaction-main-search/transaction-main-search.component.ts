@@ -106,7 +106,7 @@ export class TransactionMainSearchComponent implements OnInit {
         this.catalogTransactionType = <CatalogModel>catalogModel; /*console.log(catalogModel);*/
         //Order
         this.catalogTransactionType.list = <ItemModel[]>Util.orderAsc(this.catalogTransactionType.list, 'name');
-        
+
         this.addFilter("type", this.catalogTransactionType);
       });
 
@@ -130,8 +130,8 @@ export class TransactionMainSearchComponent implements OnInit {
 
     //Transactions
     this.entityService.find(TransactionModel.entity)
-      .subscribe(transactions => { 
-        this.transactions = <TransactionModel[]>transactions; 
+      .subscribe(transactions => {
+        this.transactions = <TransactionModel[]>transactions;
         //this.dataSource.data = this.transactions 
         this.applyFilter();
       });
@@ -179,12 +179,21 @@ export class TransactionMainSearchComponent implements OnInit {
     this.filters.find(f => f.idItemList === item._id).selected = selected;
   }
 
+  filterChangeGroup(group: String, selected: boolean) {
+    console.log(group + ":" + selected);
+    switch (group) {
+      case "type":
+        this.filters.find(f => f.filter === group).selected = selected;
+        break;
+    }
+  }
+
   applyFilter() {
 
     let transactionsFound: TransactionModel[] = [];
 
     //Validacion de fechas
-    if( moment(this.inputStartDate.value).format('DD-MM-YYYY') > moment(this.inputEndDate.value).format('DD-MM-YYYY')){
+    if (moment(this.inputStartDate.value).format('DD-MM-YYYY') > moment(this.inputEndDate.value).format('DD-MM-YYYY')) {
       this.openSnackBar("¡La fecha inicial no puede ser mayor que la fecha final!", "X", "snackbar-danger");
       return;
     }
@@ -195,7 +204,7 @@ export class TransactionMainSearchComponent implements OnInit {
         moment(t.date).format('DD-MM-YYYY') >= this.inputStartDate.value.format('DD-MM-YYYY')
         && moment(t.date).format('DD-MM-YYYY') <= this.inputEndDate.value.format('DD-MM-YYYY')
       );
-    } 
+    }
 
     //Resumen
     this.filterTransactionType = [];
@@ -360,7 +369,7 @@ export class TransactionMainSearchComponent implements OnInit {
         if ((this.filterTransactionType.indexOf(transaction) != -1 &&
           this.filterTransactionCategory.indexOf(transaction) != -1 &&
           this.filterTransactionAccount.indexOf(transaction) != -1)) {
-            this.transactionsFilter.push(transaction);
+          this.transactionsFilter.push(transaction);
         }
       }
     }
