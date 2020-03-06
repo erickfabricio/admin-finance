@@ -80,12 +80,7 @@
                 <!-- Token -->
                 <button mat-list-item (click)="viewOption('ADM-Tokens')" *ngIf="isAccessModule('ADM-Tokens')">
                     <mat-icon color="primary">fingerprint</mat-icon>Tokens
-                </button>
-
-                <!-- Log -->
-                <button mat-list-item (click)="viewOption('ADM-Logs')" *ngIf="isAccessModule('ADM-Logs')">
-                    <mat-icon color="primary">find_in_page</mat-icon>Logs
-                </button>
+                </button>                
 
                 <!-- Data -->
                 <button mat-list-item (click)="viewOption('ADM-Data')" *ngIf="isAccessModule('ADM-Data')">
@@ -147,10 +142,7 @@
             <admin-entity-token-main [userSession]="userSession"
                 [privilegeCollectionSession]="getPrivilege('adm.tokens')" *ngSwitchCase="'ADM-Tokens'">
             </admin-entity-token-main>
-
-            <admin-entity-log-main [userSession]="userSession" [privilegeCollectionSession]="getPrivilege('adm.logs')"
-                *ngSwitchCase="'ADM-Logs'"></admin-entity-log-main>
-
+            
             <admin-entity-data-main [userSession]="userSession" [privilegeCollectionSession]="getPrivilege('adm.data')"
                 *ngSwitchCase="'ADM-Data'"></admin-entity-data-main>
 

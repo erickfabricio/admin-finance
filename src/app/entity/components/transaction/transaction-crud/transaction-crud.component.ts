@@ -16,6 +16,8 @@ import * as _moment from 'moment';
 import * as _rollupMoment from 'moment';
 import { ItemModel } from 'src/app/entity/models/item.model';
 import { Util } from 'src/app/entity/models/util';
+import { EntityModel } from 'src/app/entity/models/entity.model';
+import { LogModel } from 'src/app/entity/models/log.model';
 
 const moment = _rollupMoment || _moment;
 
@@ -177,7 +179,7 @@ export class TransactionCrudComponent implements OnInit {
     this.form.get('state').setValue(this.transaction.state);
     this.form.get('creationDate').setValue(formatDate(this.transaction.creationDate, 'MMM d, y, h:mm:ss a', 'en-US'));
 
-
+    
     this.visibleControls = {
       id: true,
       type: true,
@@ -198,8 +200,9 @@ export class TransactionCrudComponent implements OnInit {
     if (this.form.valid) {
 
       //Assignment of values
-      this.transaction = new TransactionModel();
 
+      //Entity
+      this.transaction = new TransactionModel();
       this.transaction.type = String(this.form.get('type').value).trim();
       this.transaction.category = String(this.form.get('category').value).trim();
       this.transaction.account = String(this.form.get('account').value).trim();
@@ -207,17 +210,33 @@ export class TransactionCrudComponent implements OnInit {
       this.transaction.amount = this.form.get('amount').value;
       this.transaction.date = this.form.get('date').value;
       this.transaction.commentary = String(this.form.get('commentary').value).trim();
-
       this.transaction.state = String(this.form.get('state').value).trim();
+
+      /*
+      //Log
+      let log: LogModel = new LogModel();
+      log.user = this.userSession._id;
+      log.action = "CREATE";
+      log.description = "Nueva transacción";
+      log.entity = JSON.stringify(this.transaction);
+      this.transaction.logs.push(log);
+      */
+
 
       //Api 
       this.entityService.save(TransactionModel.entity, this.transaction)
-        .subscribe(transaction => { /*console.log("New transaction");*/ this.transaction = <TransactionModel>transaction; this.eventUpdateListEmitter(true) });
+        .subscribe(transaction => {
+          /*console.log("New transaction");*/
+          this.transaction = <TransactionModel>transaction;
+          this.eventUpdateListEmitter(true);
 
-      //Succes
-      let succesMessage = "Nueva transacción: " + this.transaction._id;
-      this.openSnackBar(succesMessage, "X", "snackbar-success");
-      this.createForm();
+          //Succes
+          let succesMessage = "Nueva transacción: " + this.transaction._id;
+          this.openSnackBar(succesMessage, "X", "snackbar-success");
+          this.createForm();
+        });
+
+
     } else {
       //Error
       let errorMessage = "¡Formulario inválido, " + this.validateForm() + "!";
@@ -228,8 +247,10 @@ export class TransactionCrudComponent implements OnInit {
   onUpdate() {
     //Check if there were changes    
     if (this.form.valid) {
+      
       //Assignment of values 
 
+      //Entity
       this.transaction.type = String(this.form.get('type').value).trim();
       this.transaction.category = String(this.form.get('category').value).trim();
       this.transaction.account = String(this.form.get('account').value).trim();
@@ -237,8 +258,17 @@ export class TransactionCrudComponent implements OnInit {
       this.transaction.amount = this.form.get('amount').value;
       this.transaction.date = this.form.get('date').value;
       this.transaction.commentary = String(this.form.get('commentary').value).trim();
-
       this.transaction.state = String(this.form.get('state').value).trim();
+
+      /*
+      //Log
+      let log: LogModel = new LogModel();
+      log.user = this.userSession._id;
+      log.action = "Update";
+      log.description = "Actualización de transacción";
+      log.entity = JSON.stringify(this.transaction);
+      this.transaction.logs.push(log);
+      */
 
       //Api 
       this.entityService.update(TransactionModel.entity, this.transaction)

@@ -11,5 +11,5 @@ export class TransactionModel extends EntityModel {
     amount: number;
     date: Date;
     commentary: string;
-    
+
 }

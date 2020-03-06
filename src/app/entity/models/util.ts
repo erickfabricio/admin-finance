@@ -4,10 +4,8 @@ import { EntityService } from '../services/entity.service';
 import { CatalogModel } from './catalog.model';
 
 export class Util {
-
-    constructor(private entityService: EntityService) {
-
-    }
+   
+    //******************** Listas ********************//
 
     public static orderAsc(array, key) {
         return array.sort(function (a, b) {
@@ -20,5 +18,9 @@ export class Util {
         this.orderAsc(array, key);
         return array.reverse();
     }
+
+
+    //******************** Logs ********************//
+
 
 }

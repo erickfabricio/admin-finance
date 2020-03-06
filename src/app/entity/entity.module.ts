@@ -28,9 +28,7 @@ import { AppMainComponent } from './components/app/app-main/app-main.component';
 import { TokenCrudComponent } from './components/token/token-crud/token-crud.component';
 import { TokenListComponent } from './components/token/token-list/token-list.component';
 import { TokenMainComponent } from './components/token/token-main/token-main.component';
-import { LogCrudComponent } from './components/log/log-crud/log-crud.component';
-import { LogListComponent } from './components/log/log-list/log-list.component';
-import { LogMainComponent } from './components/log/log-main/log-main.component';
+
 import { DataCrudComponent } from './components/data/data-crud/data-crud.component';
 import { DataListComponent } from './components/data/data-list/data-list.component';
 import { DataMainComponent } from './components/data/data-main/data-main.component';
@@ -50,7 +48,7 @@ import { TransactionMainReportComponent } from './components/transaction/transac
 
 
 @NgModule({
-  declarations: [EntityMainComponent, UserMainComponent, UserListComponent, UserCrudComponent, CollectionCrudComponent, CollectionListComponent, CollectionMainComponent, ModuleMainComponent, ModuleListComponent, ModuleCrudComponent, RoleMainComponent, RoleListComponent, RoleCrudComponent, AppCrudComponent, AppListComponent, AppMainComponent, TokenCrudComponent, TokenListComponent, TokenMainComponent, LogCrudComponent, LogListComponent, LogMainComponent, DataCrudComponent, DataListComponent, DataMainComponent, CatalogMainComponent, CatalogListComponent, CatalogCrudComponent, ItemMainComponent, ItemListComponent, ItemCrudComponent, TransactionMainComponent, TransactionListComponent, TransactionCrudComponent, TransactionMainSearchComponent, TransactionMainReportComponent],
+  declarations: [EntityMainComponent, UserMainComponent, UserListComponent, UserCrudComponent, CollectionCrudComponent, CollectionListComponent, CollectionMainComponent, ModuleMainComponent, ModuleListComponent, ModuleCrudComponent, RoleMainComponent, RoleListComponent, RoleCrudComponent, AppCrudComponent, AppListComponent, AppMainComponent, TokenCrudComponent, TokenListComponent, TokenMainComponent, DataCrudComponent, DataListComponent, DataMainComponent, CatalogMainComponent, CatalogListComponent, CatalogCrudComponent, ItemMainComponent, ItemListComponent, ItemCrudComponent, TransactionMainComponent, TransactionListComponent, TransactionCrudComponent, TransactionMainSearchComponent, TransactionMainReportComponent],
   imports: [
     CommonModule,
     EntityRoutingModule,
@@ -58,7 +56,7 @@ import { TransactionMainReportComponent } from './components/transaction/transac
     FormsModule,
     ReactiveFormsModule
   ],
-  exports: [EntityMainComponent, CollectionMainComponent, ModuleMainComponent, RoleMainComponent, UserMainComponent, AppMainComponent, TokenMainComponent, LogMainComponent, DataMainComponent, CatalogMainComponent, UserCrudComponent, TransactionMainComponent, TransactionMainSearchComponent, TransactionMainReportComponent],
+  exports: [EntityMainComponent, CollectionMainComponent, ModuleMainComponent, RoleMainComponent, UserMainComponent, AppMainComponent, TokenMainComponent, DataMainComponent, CatalogMainComponent, UserCrudComponent, TransactionMainComponent, TransactionMainSearchComponent, TransactionMainReportComponent],
   entryComponents: []
 })
 export class EntityModule { }
