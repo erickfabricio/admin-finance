@@ -80,7 +80,6 @@ export class TransactionMainSearchComponent implements OnInit {
   resumenTransactionCategory: any[] = [];
   resumenTransactionAccount: any[] = [];
 
-
   //Session
   @Input('userSession') userSession: UserModel;
   @Input('privilegeCollectionSession') privilegeCollectionSession: PrivilegeCollectionModel;
@@ -412,6 +411,7 @@ export class TransactionMainSearchComponent implements OnInit {
     //*********************** Filtro de tabla ***********************//
 
     //console.log(transactionsFilter);
+    this.transactionsFilter = Util.orderAsc(this.transactionsFilter, 'date'); //order
     this.dataSource.data = this.transactionsFilter;
 
   }

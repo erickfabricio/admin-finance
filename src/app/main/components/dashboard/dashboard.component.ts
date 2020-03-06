@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   signOut() {
     //Api      
     this.sessionService.signOut().subscribe(resp => {
-      console.log(resp);
+      //console.log(resp);
       localStorage.clear();
       this.router.navigate(['login']);
     });

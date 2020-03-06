@@ -43,7 +43,17 @@ export class LoginComponent implements OnInit {
         console.log(resp);
 
         if (resp.ok) {
+          //Debe esperar a que el token se agrege para continuar
           localStorage.setItem("token", resp.token);
+          
+          /*
+          console.log(localStorage.getItem("token") == null);
+          console.log(localStorage.getItem("token"));
+          while(localStorage.getItem("token") == null){
+            console.log("Falta token");
+          }*/
+          
+
           this.router.navigate(['dashboard']);
         } else {
           let succesMessage = `¡${resp.menssage}!`;
