@@ -131,7 +131,7 @@
                 <!-- Amount -->
                 <ng-container matColumnDef="amount">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Monto </th>
-                    <td mat-cell *matCellDef="let transaction"> {{transaction.amount}} </td>
+                    <td mat-cell *matCellDef="let transaction"> {{transaction.amount | number:'2.2-2'}} </td>
                 </ng-container>
 
                 <!-- Date -->
@@ -156,6 +156,7 @@
         <mat-divider></mat-divider>
         <br>
         <h4>Resumen</h4>
+        <p>Total de transacciones: {{transactionsFilter.length}}</p>
         <br>
 
         <div class="row">
@@ -163,7 +164,7 @@
             <div class="col" *ngIf="resumenTransactionType.length > 0">
                 <h5>Tipos</h5>
                 <div *ngFor="let item of resumenTransactionType">
-                    <p>{{item.type}} : {{item.money}}</p>
+                    <p>{{item.type}} ({{item.count}}): {{item.money | number:'2.2-2'}}</p>
                 </div>
                 <br>
             </div>
@@ -171,7 +172,7 @@
             <div class="col" *ngIf="resumenTransactionCategory.length > 0">
                 <h5>Categorias</h5>
                 <div *ngFor="let item of resumenTransactionCategory">
-                    <p>{{item.category}} : {{item.money}}</p>
+                    <p>{{item.category}} ({{item.count}}): {{item.money | number:'2.2-2'}}</p>
                 </div>
                 <br>
             </div>
@@ -179,7 +180,7 @@
             <div class="col" *ngIf="resumenTransactionAccount.length > 0">
                 <h5>Cuentas</h5>
                 <div *ngFor="let item of resumenTransactionAccount">
-                    <p>{{item.account}} : {{item.money}}</p>
+                    <p>{{item.account}} ({{item.count}}): {{item.money | number:'2.2-2'}}</p>
                 </div>
                 <br>
             </div>

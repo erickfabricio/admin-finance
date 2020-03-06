@@ -54,10 +54,10 @@
                 <td mat-cell *matCellDef="let transaction"> {{ getTransactionItemName('account', transaction) }} </td>
             </ng-container>
 
-             <!-- Amount -->
-             <ng-container matColumnDef="amount">
+            <!-- Amount -->
+            <ng-container matColumnDef="amount">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Monto </th>
-                <td mat-cell *matCellDef="let transaction"> {{transaction.amount}} </td>
+                <td mat-cell *matCellDef="let transaction"> {{transaction.amount | number:'2.2-2'}} </td>
             </ng-container>
 
             <!-- Date -->
@@ -68,7 +68,8 @@
 
             <!-- Header Table -->
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let transaction; columns: displayedColumns;" (click)="eventCrudEmitter('CRUD', transaction)"></tr>
+            <tr mat-row *matRowDef="let transaction; columns: displayedColumns;"
+                (click)="eventCrudEmitter('CRUD', transaction)"></tr>
 
         </table>
 

@@ -13,7 +13,8 @@
 
             <span *ngSwitchCase="'CRUD'">
                 <button type="button" class="btn btn-outline-warning" (click)="onUpdate()"
-                    *ngIf="privilegeCollectionSession.update">Actualizar</button>                    
+                    *ngIf="privilegeCollectionSession.update">Actualizar</button>
+                &nbsp;
                 <button type="button" class="btn btn-outline-danger" (click)="onDelete()"
                     *ngIf="privilegeCollectionSession.delete">Eliminar</button>
             </span>
@@ -45,12 +46,13 @@
             <!-- mail -->
             <div class="div-crud-form-input input-container" *ngIf="visibleControls.mail">
                 <mat-form-field>
-                    <input matInput placeholder="Correo electrónico" title="Correo electrónico" #inputMail type="text" formControlName="mail">
+                    <input matInput placeholder="Correo electrónico" title="Correo electrónico" #inputMail type="text"
+                        formControlName="mail">
                     <mat-error *ngIf="form.get('mail').invalid">{{getErrorMessageMail()}}</mat-error>
                     <mat-hint align="end">{{inputMail.value?.length || 0}}/100</mat-hint>
                 </mat-form-field>
             </div>
-            
+
             <!-- password -->
             <div class="div-crud-form-input input-container" *ngIf="visibleControls.password">
                 <mat-form-field>
@@ -73,7 +75,7 @@
                     <mat-hint align="end">{{inputDescription.value?.length || 0}}/100</mat-hint>
                 </mat-form-field>
             </div>
-            
+
             <!-- state -->
             <div class="div-crud-form-input input-container" *ngIf="visibleControls.state">
                 <mat-form-field>

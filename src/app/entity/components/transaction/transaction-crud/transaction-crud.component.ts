@@ -7,12 +7,15 @@ import { UserModel } from 'src/app/entity/models/user.model';
 import { PrivilegeCollectionModel } from 'src/app/entity/models/privilege.collection.model';
 import { CatalogModel } from 'src/app/entity/models/catalog.model';
 import { formatDate } from '@angular/common';
+import { environment } from 'src/environments/environment.prod';
 
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 import * as _moment from 'moment';
 import * as _rollupMoment from 'moment';
+import { ItemModel } from 'src/app/entity/models/item.model';
+import { Util } from 'src/app/entity/models/util';
 
 const moment = _rollupMoment || _moment;
 
@@ -97,7 +100,7 @@ export class TransactionCrudComponent implements OnInit {
 
       description: new FormControl('', [Validators.required, Validators.minLength(5)]),
       amount: new FormControl('', [Validators.required]),
-      date: new FormControl('', [Validators.required]),
+      date: new FormControl(moment(), [Validators.required]),
       commentary: new FormControl(''),
 
       state: new FormControl('', [Validators.required]),
@@ -122,21 +125,27 @@ export class TransactionCrudComponent implements OnInit {
   public getCatalogs() {
 
     //Type
-    this.entityService.findEntityById(CatalogModel.entity, "5e5d4377c8e0320ec6408111")
+    this.entityService.findEntityById(CatalogModel.entity, environment.catalogTransactionType)
       .subscribe(catalogModel => {
         this.catalogTransactionType = <CatalogModel>catalogModel; /*console.log(catalogModel);*/
+        //Order
+        this.catalogTransactionType.list = <ItemModel[]>Util.orderAsc(this.catalogTransactionType.list, 'name');
       });
 
     //Category
-    this.entityService.findEntityById(CatalogModel.entity, "5e5d43ddc8e0320ec6408115")
+    this.entityService.findEntityById(CatalogModel.entity, environment.catalogTransactionCategory)
       .subscribe(catalogModel => {
         this.catalogTransactionCategory = <CatalogModel>catalogModel; /*console.log(catalogModel);*/
+        //Order
+        this.catalogTransactionCategory.list = <ItemModel[]>Util.orderAsc(this.catalogTransactionCategory.list, 'name');
       });
 
     //Account
-    this.entityService.findEntityById(CatalogModel.entity, "5e5d3a8ad6851909ef6cee63")
+    this.entityService.findEntityById(CatalogModel.entity, environment.catalogTransactionAccount)
       .subscribe(catalogModel => {
         this.catalogTransactionAccount = <CatalogModel>catalogModel; /*console.log(catalogModel);*/
+        //Order
+        this.catalogTransactionAccount.list = <ItemModel[]>Util.orderAsc(this.catalogTransactionAccount.list, 'name');
       });
 
   }
@@ -155,7 +164,7 @@ export class TransactionCrudComponent implements OnInit {
 
   crud() {
     this.title = "Transacción";
-        
+
     this.form.get('id').setValue(this.transaction._id);
     this.form.get('type').setValue(this.transaction.type);
     this.form.get('category').setValue(this.transaction.category);
@@ -220,7 +229,7 @@ export class TransactionCrudComponent implements OnInit {
     //Check if there were changes    
     if (this.form.valid) {
       //Assignment of values 
-      
+
       this.transaction.type = String(this.form.get('type').value).trim();
       this.transaction.category = String(this.form.get('category').value).trim();
       this.transaction.account = String(this.form.get('account').value).trim();
@@ -228,7 +237,7 @@ export class TransactionCrudComponent implements OnInit {
       this.transaction.amount = this.form.get('amount').value;
       this.transaction.date = this.form.get('date').value;
       this.transaction.commentary = String(this.form.get('commentary').value).trim();
-      
+
       this.transaction.state = String(this.form.get('state').value).trim();
 
       //Api 
@@ -281,7 +290,7 @@ export class TransactionCrudComponent implements OnInit {
     if (this.form.get('date').invalid) {
       return this.getErrorMessageDate();
     }
-    
+
     if (this.form.get('state').invalid) {
       return this.getErrorMessageState();
     }
@@ -327,7 +336,7 @@ export class TransactionCrudComponent implements OnInit {
   }
 
   getErrorMessageCommentary() {
-    
+
   }
 
   getErrorMessageState() {

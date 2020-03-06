@@ -17,6 +17,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 
 import * as _moment from 'moment';
 import * as _rollupMoment from 'moment';
+import { Util } from 'src/app/entity/models/util';
 
 const moment = _rollupMoment || _moment;
 
@@ -65,6 +66,7 @@ export class TransactionMainSearchComponent implements OnInit {
 
   //Filter
   filters: any[] = [];
+  transactionsFilter: TransactionModel[] = [];
 
   today: Date;
   inputStartDate = new FormControl(moment());
@@ -102,6 +104,9 @@ export class TransactionMainSearchComponent implements OnInit {
     this.entityService.findEntityById(CatalogModel.entity, environment.catalogTransactionType)
       .subscribe(catalogModel => {
         this.catalogTransactionType = <CatalogModel>catalogModel; /*console.log(catalogModel);*/
+        //Order
+        this.catalogTransactionType.list = <ItemModel[]>Util.orderAsc(this.catalogTransactionType.list, 'name');
+        
         this.addFilter("type", this.catalogTransactionType);
       });
 
@@ -109,6 +114,8 @@ export class TransactionMainSearchComponent implements OnInit {
     this.entityService.findEntityById(CatalogModel.entity, environment.catalogTransactionCategory)
       .subscribe(catalogModel => {
         this.catalogTransactionCategory = <CatalogModel>catalogModel; /*console.log(catalogModel);*/
+        //Order
+        this.catalogTransactionCategory.list = <ItemModel[]>Util.orderAsc(this.catalogTransactionCategory.list, 'name');
         this.addFilter("category", this.catalogTransactionCategory);
       });
 
@@ -116,6 +123,8 @@ export class TransactionMainSearchComponent implements OnInit {
     this.entityService.findEntityById(CatalogModel.entity, environment.catalogTransactionAccount)
       .subscribe(catalogModel => {
         this.catalogTransactionAccount = <CatalogModel>catalogModel; /*console.log(catalogModel);*/
+        //Order
+        this.catalogTransactionAccount.list = <ItemModel[]>Util.orderAsc(this.catalogTransactionAccount.list, 'name');
         this.addFilter("account", this.catalogTransactionAccount);
       });
 
@@ -270,7 +279,7 @@ export class TransactionMainSearchComponent implements OnInit {
   //Resumen
   getResumen(transactionsFound: TransactionModel[]) {
 
-    let transactionsFilter: TransactionModel[] = [];
+    this.transactionsFilter = [];
 
     let filtersType: any[] = [];
     let filtersCategory: any[] = [];
@@ -294,24 +303,24 @@ export class TransactionMainSearchComponent implements OnInit {
     //#0
 
     if (filtersType.length === 0 && filtersCategory.length === 0 && filtersAccount.length === 0) {
-      transactionsFilter = transactionsFound;
+      this.transactionsFilter = transactionsFound;
     }
 
     //#1
 
     //Solo type
     if (filtersType.length !== 0 && filtersCategory.length === 0 && filtersAccount.length === 0) {
-      transactionsFilter = this.filterTransactionType;
+      this.transactionsFilter = this.filterTransactionType;
     }
 
     //Solo category
     if (filtersType.length === 0 && filtersCategory.length !== 0 && filtersAccount.length === 0) {
-      transactionsFilter = this.filterTransactionCategory;
+      this.transactionsFilter = this.filterTransactionCategory;
     }
 
     //Solo account
     if (filtersType.length === 0 && filtersCategory.length === 0 && filtersAccount.length !== 0) {
-      transactionsFilter = this.filterTransactionAccount;
+      this.transactionsFilter = this.filterTransactionAccount;
     }
 
     //#2
@@ -320,7 +329,7 @@ export class TransactionMainSearchComponent implements OnInit {
     if (filtersType.length !== 0 && filtersCategory.length !== 0 && filtersAccount.length === 0) {
       for (let transaction of transactionsFound) {
         if ((this.filterTransactionType.indexOf(transaction) != -1 && this.filterTransactionCategory.indexOf(transaction) != -1)) {
-          transactionsFilter.push(transaction);
+          this.transactionsFilter.push(transaction);
         }
       }
     }
@@ -329,7 +338,7 @@ export class TransactionMainSearchComponent implements OnInit {
     if (filtersType.length !== 0 && filtersCategory.length === 0 && filtersAccount.length !== 0) {
       for (let transaction of transactionsFound) {
         if ((this.filterTransactionType.indexOf(transaction) != -1 && this.filterTransactionAccount.indexOf(transaction) != -1)) {
-          transactionsFilter.push(transaction);
+          this.transactionsFilter.push(transaction);
         }
       }
     }
@@ -338,7 +347,7 @@ export class TransactionMainSearchComponent implements OnInit {
     if (filtersType.length === 0 && filtersCategory.length !== 0 && filtersAccount.length !== 0) {
       for (let transaction of transactionsFound) {
         if ((this.filterTransactionCategory.indexOf(transaction) != -1 && this.filterTransactionAccount.indexOf(transaction) != -1)) {
-          transactionsFilter.push(transaction);
+          this.transactionsFilter.push(transaction);
         }
       }
     }
@@ -351,7 +360,7 @@ export class TransactionMainSearchComponent implements OnInit {
         if ((this.filterTransactionType.indexOf(transaction) != -1 &&
           this.filterTransactionCategory.indexOf(transaction) != -1 &&
           this.filterTransactionAccount.indexOf(transaction) != -1)) {
-          transactionsFilter.push(transaction);
+            this.transactionsFilter.push(transaction);
         }
       }
     }
@@ -360,41 +369,41 @@ export class TransactionMainSearchComponent implements OnInit {
 
     //Resumen Agrupacion de tipos
     for (let type of filtersType) {
-      let groupTransactionType = transactionsFilter.filter(t => t.type === type.item._id);
+      let groupTransactionType = this.transactionsFilter.filter(t => t.type === type.item._id);
       let amountGroupTransactionType: number = 0;
       for (let transaction of groupTransactionType) {
         amountGroupTransactionType += transaction.amount;
       }
-      //console.log(type.item.name + ": " + amountGroupTransactionType);
-      this.resumenTransactionType.push({ type: type.item.name, money: amountGroupTransactionType });
+      //console.log(type.item.name + ": " + amountGroupTransactionType);            
+      this.resumenTransactionType.push({ type: type.item.name, money: amountGroupTransactionType, count: groupTransactionType.length });
     }
 
     //Resumen Agrupacion de caregorias
     for (let category of filtersCategory) {
-      let groupTransactionCategory = transactionsFilter.filter(t => t.category === category.item._id);
+      let groupTransactionCategory = this.transactionsFilter.filter(t => t.category === category.item._id);
       let amountGroupTransactionCategory: number = 0;
       for (let transaction of groupTransactionCategory) {
         amountGroupTransactionCategory += transaction.amount;
       }
       //console.log(category.item.name + ": " + amountGroupTransactionCategory);
-      this.resumenTransactionCategory.push({ category: category.item.name, money: amountGroupTransactionCategory });
+      this.resumenTransactionCategory.push({ category: category.item.name, money: amountGroupTransactionCategory, count: groupTransactionCategory.length });
     }
 
     //Resumen Agrupacion de cuentas
     for (let account of filtersAccount) {
-      let groupTransactionAccount = transactionsFilter.filter(t => t.account === account.item._id);
+      let groupTransactionAccount = this.transactionsFilter.filter(t => t.account === account.item._id);
       let amountGroupTransactionAccount: number = 0;
       for (let transaction of groupTransactionAccount) {
         amountGroupTransactionAccount += transaction.amount;
       }
       //console.log(account.item.name + ": " + amountGroupTransactionAccount);
-      this.resumenTransactionAccount.push({ account: account.item.name, money: amountGroupTransactionAccount });
+      this.resumenTransactionAccount.push({ account: account.item.name, money: amountGroupTransactionAccount, count: groupTransactionAccount.length });
     }
 
     //*********************** Filtro de tabla ***********************//
 
     //console.log(transactionsFilter);
-    this.dataSource.data = transactionsFilter;
+    this.dataSource.data = this.transactionsFilter;
 
   }
 
