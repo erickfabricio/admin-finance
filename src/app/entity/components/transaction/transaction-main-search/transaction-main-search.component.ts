@@ -105,7 +105,6 @@ export class TransactionMainSearchComponent implements OnInit {
         this.catalogTransactionType = <CatalogModel>catalogModel; /*console.log(catalogModel);*/
         //Order
         this.catalogTransactionType.list = <ItemModel[]>Util.orderAsc(this.catalogTransactionType.list, 'name');
-
         this.addFilter("type", this.catalogTransactionType);
       });
 
@@ -143,13 +142,19 @@ export class TransactionMainSearchComponent implements OnInit {
 
     switch (catalogName) {
       case "type":
-        item = this.catalogTransactionType.list.find(t => t._id == transaction.type);
+        if (typeof this.catalogTransactionType.list != "undefined") {
+          item = this.catalogTransactionType.list.find(t => t._id == transaction.type);
+        }
         break;
       case "category":
-        item = this.catalogTransactionCategory.list.find(t => t._id == transaction.category);
+        if (typeof this.catalogTransactionCategory.list != "undefined") {
+          item = this.catalogTransactionCategory.list.find(t => t._id == transaction.category);
+        }
         break;
       case "account":
-        item = this.catalogTransactionAccount.list.find(t => t._id == transaction.account);
+        if (typeof this.catalogTransactionAccount.list != "undefined") {
+          item = this.catalogTransactionAccount.list.find(t => t._id == transaction.account);
+        }
         break;
     }
 

@@ -43,12 +43,6 @@ export class TransactionListComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.getCatalogs();
-    this.find();
-  }
-
-  find() {
-    this.entityService.find(TransactionModel.entity)
-      .subscribe(transactions => { /*console.transaction(transactions);*/ this.transactions = <TransactionModel[]>transactions; this.dataSource.data = this.transactions });
   }
 
   applyFilter(filterValue: string) {
@@ -73,6 +67,13 @@ export class TransactionListComponent implements OnInit {
       .subscribe(catalogModel => {
         this.catalogTransactionAccount = <CatalogModel>catalogModel; /*console.log(catalogModel);*/
       });
+
+    //Transactions
+    this.entityService.find(TransactionModel.entity)
+      .subscribe(transactions => {
+        this.transactions = <TransactionModel[]>transactions;
+        this.dataSource.data = this.transactions;
+      });
   }
 
   getTransactionItemName(catalogName: string, transaction: TransactionModel): String {
@@ -81,13 +82,19 @@ export class TransactionListComponent implements OnInit {
 
     switch (catalogName) {
       case "type":
-        item = this.catalogTransactionType.list.find(t => t._id == transaction.type);
+        if (typeof this.catalogTransactionType.list != "undefined") {
+          item = this.catalogTransactionType.list.find(t => t._id == transaction.type);
+        }
         break;
       case "category":
-        item = this.catalogTransactionCategory.list.find(t => t._id == transaction.category);
+        if (typeof this.catalogTransactionCategory.list != "undefined") {
+          item = this.catalogTransactionCategory.list.find(t => t._id == transaction.category);
+        }
         break;
       case "account":
-        item = this.catalogTransactionAccount.list.find(t => t._id == transaction.account);
+        if (typeof this.catalogTransactionAccount.list != "undefined") {
+          item = this.catalogTransactionAccount.list.find(t => t._id == transaction.account);
+        }
         break;
     }
 
