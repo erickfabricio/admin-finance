@@ -59,8 +59,12 @@ export class TransactionMainReportComponent implements OnInit {
   catalogTransactionAccount: CatalogModel = new CatalogModel();
 
   today: Date;
-  inputStartDate = new FormControl(moment());
-  inputEndDate = new FormControl(moment());
+  historicalDate = moment(environment.historicalDate, 'DD-MM-YYYY').toDate();
+  inputStartDate = new FormControl(moment(environment.startDate, 'DD-MM-YYYY').toDate());
+
+  ingreso: number;
+  egreso: number;
+  diferencia: number;
 
   constructor(private entityService: EntityService, private _snackBar: MatSnackBar) { }
 
@@ -95,7 +99,33 @@ export class TransactionMainReportComponent implements OnInit {
     this.entityService.find(TransactionModel.entity)
       .subscribe(transactions => {
         this.transactions = <TransactionModel[]>transactions;
+        this.applyFilter();
       });
+
+  }
+
+  applyFilter() {
+    
+    //Ingreso
+    let groupTransactionIngreso = this.transactions.filter(t => t.type === environment.catalogTransactionTypeIngreso &&
+      moment(t.date).format('DD-MM-YYYY') >= moment(this.inputStartDate.value).format('DD-MM-YYYY'));
+
+    this.ingreso = 0;
+    for (let t of groupTransactionIngreso) {
+      this.ingreso += t.amount;
+    }
+
+    //Egreso
+    let groupTransactionEgreso = this.transactions.filter(t => t.type === environment.catalogTransactionTypeEgreso &&
+      moment(t.date).format('DD-MM-YYYY') >= moment(this.inputStartDate.value).format('DD-MM-YYYY'));
+
+    this.egreso = 0;
+    for (let t of groupTransactionEgreso) {
+      this.egreso += t.amount;
+    }
+    
+    //Diferencia
+    this.diferencia = this.ingreso - this.egreso;
 
   }
 

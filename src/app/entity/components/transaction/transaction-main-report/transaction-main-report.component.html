@@ -1,0 +1,54 @@
+<div class="div-main container">
+
+    <!-- HEADER -->
+    <div class="div-header">
+        <br>
+        <h4>Filtros de búsqueda</h4>
+
+        <!-- Dates -->
+        <div class="row">
+
+            <!-- start date -->
+            <div class="input-container col">
+                <mat-form-field>
+                    <input matInput [matDatepicker]="pickerStartDate" placeholder="Fecha inicial" title="Fecha inicial"
+                        [formControl]="inputStartDate" [min]="historicalDate">
+                    <mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerStartDate></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <!-- search -->
+            <div class="input-container col">
+                <button type="button" class="btn btn-outline-success" (click)="applyFilter()">Buscar</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BODY -->
+    <div class="div-body">
+
+
+        <div class="row">
+
+            <div class="col">
+                Ingreso: {{ingreso| number:'2.2-2'}}
+            </div>
+
+            <div class="col">
+                Egreso: {{egreso| number:'2.2-2'}}
+            </div>
+
+            <div class="col">
+                Diferencia: {{diferencia| number:'2.2-2'}}
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+</div>
