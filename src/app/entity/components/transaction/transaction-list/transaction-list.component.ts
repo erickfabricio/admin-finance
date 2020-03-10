@@ -43,10 +43,19 @@ export class TransactionListComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.getCatalogs();
+    this.find();
   }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  find() {
+    this.entityService.find(TransactionModel.entity)
+      .subscribe(transactions => {
+        this.transactions = <TransactionModel[]>transactions;
+        this.dataSource.data = this.transactions;
+      });
   }
 
   getCatalogs() {
@@ -68,12 +77,6 @@ export class TransactionListComponent implements OnInit {
         this.catalogTransactionAccount = <CatalogModel>catalogModel; /*console.log(catalogModel);*/
       });
 
-    //Transactions
-    this.entityService.find(TransactionModel.entity)
-      .subscribe(transactions => {
-        this.transactions = <TransactionModel[]>transactions;
-        this.dataSource.data = this.transactions;
-      });
   }
 
   getTransactionItemName(catalogName: string, transaction: TransactionModel): String {
